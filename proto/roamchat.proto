@@ -1,0 +1,217 @@
+syntax = "proto3";
+
+option go_package = "github.com/nayanmakasare/RoamChat;proto";
+
+package proto;
+
+import "annotations.proto";
+
+service RoamChat {
+
+  //room CURDL
+  rpc listRooms(ListRoomReq) returns (ListRoomResp) {
+    option (google.api.http) = {
+      get:"/listRoom/{user_id}"
+    };
+  };
+
+  rpc getRoom(GetRoomReq) returns (Room) {
+    option (google.api.http) = {
+      get:"/getRoom/{room_id}"
+    };
+  };
+
+  rpc updateRoom(Room) returns (Room) {
+    option (google.api.http) = {
+      put:"/updateRoom"
+      body:"*"
+    };
+  };
+
+  rpc deleteRoom(DeleteRoomReq) returns (DeleteRoomResp) {
+    option (google.api.http) = {
+      delete:"/deleteRoom/{room_id}"
+    };
+  };
+
+  rpc createRoom(Room) returns (Room) {
+    option (google.api.http) = {
+      post: "/createRoom"
+      body: "*"
+    };
+  };
+
+
+
+  // user CRUDL
+  rpc listUsers(ListUserReq) returns (ListUserResp) {
+    option (google.api.http) = {
+      get:"/listUsers/{room_id}"
+    };
+  };
+
+  rpc getUser(GetUserReq) returns (User) {
+    option (google.api.http) = {
+      get:"/getUser/{user_id}"
+    };
+  };
+
+  rpc updateUser(User) returns (User) {
+    option (google.api.http) = {
+      put:"/updateUser"
+      body:"*"
+    };
+  };
+
+  rpc deleteUser(DeleteUserReq) returns (DeleteUserResp) {
+    option (google.api.http) = {
+      delete:"/deleteUser/{user_id}"
+    };
+  };
+
+  rpc createUser(User) returns (User) {
+    option (google.api.http) = {
+      post: "/createUser"
+      body: "*"
+    };
+  };
+
+
+
+  //Messages CRUDL
+  rpc listMessages(ListMsgReq) returns (ListMsgResp) {
+    option (google.api.http) = {
+      post:"/listMessages"
+      body:"*"
+    };
+  };
+
+  rpc getMsg(GetMsgReq) returns (Message) {
+    option (google.api.http) = {
+      get:"/getMessage/{msg_id}"
+    };
+  };
+
+  rpc updateMsg(Message) returns (Message) {
+    option (google.api.http) = {
+      put:"/updateMessage"
+      body:"*"
+    };
+  };
+
+  rpc deleteMsg(DeleteMsgReq) returns (DeleteMsgResp) {
+    option (google.api.http) = {
+      delete:"/deleteMessage/{msg_id}"
+    };
+  };
+
+  rpc createMsg(Message) returns (Message) {
+    option (google.api.http) = {
+      post: "/createMsg"
+      body: "*"
+    };
+  };
+
+}
+
+
+
+//room CURDL
+message GetRoomReq{
+  string room_id =  1;
+}
+
+message DeleteRoomResp{
+  bool isDeleted =  1;
+}
+
+message DeleteRoomReq{
+  string room_id =  1;
+}
+
+message ListRoomResp{
+  repeated Room rooms = 1;
+}
+
+message ListRoomReq{
+  string user_id = 1;
+}
+
+
+
+
+//user CRUDL
+message GetUserReq{
+  string user_id =  1;
+}
+
+message DeleteUserResp{
+  bool isDeleted =  1;
+}
+
+message DeleteUserReq{
+  string user_id =  1;
+}
+
+message ListUserResp{
+  repeated User users = 1;
+}
+
+message ListUserReq{
+  string room_id = 1;
+}
+
+
+
+
+//mesaages CRUDL
+message GetMsgReq{
+  string msg_id =  1;
+}
+
+message DeleteMsgResp{
+  bool isDeleted =  1;
+}
+
+message DeleteMsgReq{
+  string msg_id =  1;
+}
+
+message ListMsgResp{
+  repeated Message messages = 1;
+
+}
+
+message ListMsgReq{
+  string user_id = 1;
+  string room_id = 2;
+}
+
+
+
+
+
+
+
+
+
+message Room {
+  string room_name = 1;
+  string room_id = 2;
+  repeated User users = 3;
+}
+
+message User {
+  string user_name = 1;
+  string user_id = 2;
+  repeated string room_id = 3;
+}
+
+message Message {
+  string msg = 1;
+  string time = 2;
+  string user_id = 3;
+  string msg_id = 4;
+  string room_id = 5;
+}
+
